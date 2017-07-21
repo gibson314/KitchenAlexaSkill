@@ -12,6 +12,43 @@
     {
       "intent": "GetNewFactIntent"
     },
+		{
+    	"slots": [
+        {
+          "name": "RecipeName",
+          "type": "LIST_OF_RECIPES"
+        }
+      ],
+    	"intent": "PrepareIntent"
+    },
+    {
+    	"slots": [
+        {
+          "name": "RecipeName",
+          "type": "LIST_OF_RECIPES"
+        }
+      ],
+    	"intent": "CookIntent"
+    },
+    {
+    	"intent": "RepeatIntent"
+    },
+    {
+    	"intent": "NextStepIntent"
+    },
+    {	
+    	"slots": [
+        {
+          "name": "stepNumber",
+          "type": "AMAZON.NUMBER"
+        }
+      ],
+    	"intent": "GoToStepIntent"
+    },
+    {
+    	"intent": "WhichStepIntent"
+    },
+    
     {
       "slots": [
         {
