@@ -13,6 +13,10 @@ current_step = -1
 prepare_cook_status = 0
 current_recipe = ""
 
+ingredients = {
+    "basic pasta": "1 egg, beaten, 1/2 teaspoon salt, 1 cup all-purpose flour, 2 tablespoons water",
+    "pizza": "nothing"
+}
 
 recipes = {
     "basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
@@ -191,9 +195,27 @@ def handle_go_to_step_intent(intent, session):
         intent['name'], speech_output, reprompt_text, should_end_session))
 
 def handle_prepare_intent(intent, session):
-    pass
+    global current_recipe
+    global ingredients
+    current_recipe = intent['slots']['RecipeName']['value']
+    print("current recipe is", current_recipe)
+
+    if current_recipe in recipes:
+        speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . Are you ready?"
+        reprompt_text = "Take you time. You can tell me when you are well prepared for " + current_recipe
+        should_end_session = False
+
+    else:
+        #TODO
+        speech_output = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish."
+        reprompt_text = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish. "
+        should_end_session = False
+
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
 
 def handle_next_step_intent():
+
     pass
 
 def hanlde_which_step_intent():
