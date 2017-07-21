@@ -11,28 +11,24 @@ from __future__ import print_function
 
 current_step = -1
 prepare_cook_status = 0
-current_recipe = "basic pasta"
+current_recipe = "pasta"
 
 ingredients = {
-    "basic pasta": "1 egg, beaten, 1/2 teaspoon salt, 1 cup all-purpose flour, 2 tablespoons water",
-    "pizza": "nothing"
+    "pasta": "1 pound spaghetti, 1 tablespoons of spaghetti sauce, 1 cup shredded mild Cheddar cheese",
+    "lemon apple juice": "1/2 cup cool water 1 cucumber, halved 2 green apples, quartered 1 lemon, halved"
 }
 
 recipes = {
     "basic pasta": [
-        "step one: In a medium sized bowl, combine flour and salt. ",
-        "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
-        "step three: Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
-        "step four: On a lightly floured surface, knead dough for about 3 to 4 minutes. ",
-        "step five: With a pasta machine or by hand roll dough out to desired thinness. ",
-        "step six: Use machine or knife to cut into strips of desired width."],
-    "pizza": [
-        "step one: In a medium sized bowl, combine flour and salt. ",
-        "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
-        "step three: Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
-        "step four: On a lightly floured surface, knead dough for about 3 to 4 minutes. ",
-        "step five: With a pasta machine or by hand roll dough out to desired thinness. ",
-        "step six: Use machine or knife to cut into strips of desired width."]
+        "step one: Bring a large pot of lightly salted water to a boil. ",
+        "step two: Mix in pasta and cook for 8 to 10 minutes or until al dente; drain. ",
+        "step three: Mix together spaghetti and spaghetti sauce. ",
+        "step four: Top with cheese. "],
+    "lemon apple juice": [
+        "step one: Pour water into a glass and place beneath the spigot of a juicer.",
+        "step two: Process first the cucumber, waiting about 20 seconds between halves. ",
+        "step three: Finally juice the lemon halves.",
+        "step four: Stir juice vigorously to blend "]
 }
 
 

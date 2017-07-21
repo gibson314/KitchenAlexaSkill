@@ -4,32 +4,23 @@ CookIntent let's cook {RecipeName}
 CookIntent teach me how to cook {RecipeName}
 CookIntent i want to cook {RecipeName}
 RepeatIntent repeat  
+RepeatIntent excuse me
+RepeatIntent can you say it again
+NextStepIntent yes
+NextStepIntent sure
 NextStepIntent next step
+NextStepIntent next
+NextStepIntent yup
+NextStepIntent OK
 NextStepIntent gotcha
 NextStepIntent i'm done
 NextStepIntent All right
 GoToStepIntent go to step {stepNumber}
+GoToStepIntent go to {stepNumber}
+GoToStepIntent step {stepNumber}
+GoToStepIntent go back to step {stepNumber}
 WhichStepIntent which step I am at
 WhichStepIntent which step
-GetNewFactIntent give me a fact
-GetNewFactIntent tell me about car
-GetNewFactIntent we want to know more
-MyColorIsIntent my favorite color is {Color}
-MyColorIsIntent my favorite animal is {Animal}
-WhatsMyColorIntent what's my favorite color
-WhatsMyColorIntent what is my favorite color
-WhatsMyColorIntent what's my color
-WhatsMyColorIntent what is my color
-WhatsMyColorIntent my color
-WhatsMyColorIntent my favorite color
-WhatsMyColorIntent get my color
-WhatsMyColorIntent get my favorite color
-WhatsMyColorIntent give me my favorite color
-WhatsMyColorIntent give me my color
-WhatsMyColorIntent what my color is
-WhatsMyColorIntent what my favorite color is
-WhatsMyColorIntent yes
-WhatsMyColorIntent yup
-WhatsMyColorIntent sure
-WhatsMyColorIntent yes please
+WhichStepIntent where am I
+WhichStepIntent where were we
 WhichDishesValidIntent give me dishes lower than {Amount} calories
