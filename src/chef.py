@@ -17,9 +17,12 @@ current_recipe = "Basic pasta"
 recipes = {
     "Basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
     "pizza": [
-        "step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
-        "step two: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water."]
-
+        "step one: In a medium sized bowl, combine flour and salt. ",
+        "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
+        "step three: Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
+        "step four: On a lightly floured surface, knead dough for about 3 to 4 minutes. ",
+        "step five: With a pasta machine or by hand roll dough out to desired thinness. ",
+        "step six: Use machine or knife to cut into strips of desired width."]
 }
 
 
@@ -55,7 +58,18 @@ def build_response(session_attributes, speechlet_response):
 
 
 # --------------- Functions that control the skill's behavior ------------------
+def handle_prepare_intent():
+    pass
+def handle_repeat_indent(intent,session):
+    pass
+def handle_next_step_intent():
+    pass
+def handle_go_to_step_intent():
+    pass
+def hanlde_which_step_intent():
+    pass
 
+    
 def get_welcome_response():
     """ If we wanted to initialize the session to have some attributes we could
     add those here
@@ -174,7 +188,7 @@ def repeat_current_cooking_step(intent, session):
         intent['name'], speech_output, reprompt_text, should_end_session))
 
 
-def goto_next_cooking_step(intent, session):
+def handle_go_to_step_intent(intent, session):
     speech_output = "there must be something wroing"
     reprompt_text = "you need to be right, man "
     should_end_session = False
@@ -236,6 +250,20 @@ def on_intent(intent_request, session):
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
+<<<<<<< HEAD
+    elif intent_name == "PrepareIntent":
+        return handle_prepare_intent();
+    elif intent_name == "CookIntent":
+        return handle_cook_intent();
+    elif intent_name == "RepeatIntent":
+        return handle_repeat_indent(intent,session)
+    elif intent_name == "NextStepIntent":
+        return handle_next_step_intent();
+    elif intent_name == "GoToStepIntent":
+        return handle_go_to_step_intent();
+    elif intent_name == "WhichStepIntent":
+        return hanlde_which_step_intent();
+=======
 
     elif intent_name == "RepeatIntent":
         return repeat_current_cooking_step(intent,session)
@@ -243,6 +271,7 @@ def on_intent(intent_request, session):
     elif intent_name == "NextStepIntent":
         return goto_next_cooking_step(intent,session)
 
+>>>>>>> 8ae0e61e99dfecb59486ba3c1e2916bfd9fa808e
     else:
         raise ValueError("Invalid intent")
 
