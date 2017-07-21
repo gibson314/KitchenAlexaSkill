@@ -11,7 +11,7 @@ from __future__ import print_function
 
 current_step = -1
 prepare_cook_status = 0
-current_recipe = ""
+current_recipe = "basic pasta"
 
 ingredients = {
     "basic pasta": "1 egg, beaten, 1/2 teaspoon salt, 1 cup all-purpose flour, 2 tablespoons water",
@@ -19,7 +19,13 @@ ingredients = {
 }
 
 recipes = {
-    "basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
+    "basic pasta": [
+        "step one: In a medium sized bowl, combine flour and salt. ",
+        "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
+        "step three: Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
+        "step four: On a lightly floured surface, knead dough for about 3 to 4 minutes. ",
+        "step five: With a pasta machine or by hand roll dough out to desired thinness. ",
+        "step six: Use machine or knife to cut into strips of desired width."],
     "pizza": [
         "step one: In a medium sized bowl, combine flour and salt. ",
         "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
@@ -178,21 +184,7 @@ def handle_repeat_indent(intent, session):
 
 
 def handle_go_to_step_intent(intent, session):
-    speech_output = "there must be something wroing"
-    reprompt_text = "you need to be right, man "
-    should_end_session = False
-    global current_step
-    print("current step is %d", current_step)
-
-    if current_recipe in recipes:
-        steps = recipes[current_recipe]
-        print("the length of step is %d",len(steps))
-        print("current step is %d", current_step)
-        current_step = current_step + 1
-        if (current_step< len(steps)):
-            speech_output = steps[current_step]
-    return build_response({}, build_speechlet_response(
-        intent['name'], speech_output, reprompt_text, should_end_session))
+    pass
 
 def handle_prepare_intent(intent, session):
     global current_recipe
@@ -204,6 +196,8 @@ def handle_prepare_intent(intent, session):
         speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . Are you ready?"
         reprompt_text = "Take you time. You can tell me when you are well prepared for " + current_recipe
         should_end_session = False
+        global current_step
+        current_step = -1
 
     else:
         #TODO
@@ -214,11 +208,24 @@ def handle_prepare_intent(intent, session):
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
-def handle_next_step_intent():
+def handle_next_step_intent(intent, session):
+    speech_output = "there must be something wroing"
+    reprompt_text = "you need to be right, man "
+    should_end_session = False
+    global current_step
+    print("current step is %d", current_step)
 
-    pass
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        print("the length of step is ",len(steps))
+        print("current step is ", current_step)
+        current_step = current_step + 1
+        if (current_step< len(steps)):
+            speech_output = steps[current_step]
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
 
-def hanlde_which_step_intent():
+def hanlde_which_step_intent(intent, session):
     pass
 
 def handle_cook_intent(intent, session):
@@ -232,7 +239,7 @@ def handle_cook_intent(intent, session):
         reprompt_text = "Come on, let's cook " + current_recipe
         should_end_session = False
         global current_step
-        current_step = 0
+        current_step = -1
         print("current step is", current_step)
     else:
         #TODO
@@ -287,7 +294,7 @@ def on_intent(intent_request, session):
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
-        return handle_session_end_request()
+        return handle_session_end_request(intent, session)
     elif intent_name == "PrepareIntent":
         return handle_prepare_intent(intent, session);
     elif intent_name == "CookIntent":
@@ -295,11 +302,11 @@ def on_intent(intent_request, session):
     elif intent_name == "RepeatIntent":
         return handle_repeat_indent(intent,session)
     elif intent_name == "NextStepIntent":
-        return handle_next_step_intent();
+        return handle_next_step_intent(intent, session);
     elif intent_name == "GoToStepIntent":
         return handle_go_to_step_intent(intent,session);
     elif intent_name == "WhichStepIntent":
-        return hanlde_which_step_intent();
+        return hanlde_which_step_intent(intent, session);
 
     else:
         raise ValueError("Invalid intent")
