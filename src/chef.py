@@ -11,11 +11,11 @@ from __future__ import print_function
 
 current_step = -1
 prepare_cook_status = 0
-current_recipe = "Basic passta"
+current_recipe = "Basic pasta"
 
 
 recipes = {
-    "Basic passta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
+    "Basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
     "pizza": [
         "step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
         "step two: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water."]
@@ -180,7 +180,7 @@ def goto_next_cooking_step(intent, session):
     should_end_session = False
     global current_step
     if current_recipe in recipes:
-        steps = recipe[current_recipe]
+        steps = recipes[current_recipe]
         current_step = current_step + 1
         if (current_step< len(steps)):
             speech_output = steps[current_step]
@@ -230,10 +230,10 @@ def on_intent(intent_request, session):
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
 
-    elif intent_name == "RepeatStepIntent":
+    elif intent_name == "RepeatIntent":
         return repeat_current_cooking_step(intent,session)
 
-    elif intent_name == "RepeatStepIntent":
+    elif intent_name == "NextStepIntent":
         return goto_next_cooking_step(intent,session)
 
     else:
