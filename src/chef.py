@@ -11,11 +11,11 @@ from __future__ import print_function
 
 current_step = -1
 prepare_cook_status = 0
-current_recipe = "Basic passta"
+current_recipe = "Basic pasta"
 
 
 recipes = {
-    "Basic passta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
+    "Basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
     "pizza": [
         "step one: In a medium sized bowl, combine flour and salt. ",
         "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
@@ -188,13 +188,13 @@ def repeat_current_cooking_step(intent, session):
         intent['name'], speech_output, reprompt_text, should_end_session))
 
 
-def goto_next_cooking_step(intent, session):
+def handle_go_to_step_intent(intent, session):
     speech_output = "there must be something wroing"
     reprompt_text = "you need to be right, man "
     should_end_session = False
     global current_step
     if current_recipe in recipes:
-        steps = recipe[current_recipe]
+        steps = recipes[current_recipe]
         current_step = current_step + 1
         if (current_step< len(steps)):
             speech_output = steps[current_step]
@@ -243,6 +243,7 @@ def on_intent(intent_request, session):
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
+<<<<<<< HEAD
     elif intent_name == "PrepareIntent":
         return handle_prepare_intent();
     elif intent_name == "CookIntent":
@@ -255,6 +256,15 @@ def on_intent(intent_request, session):
         return handle_go_to_step_intent();
     elif intent_name == "WhichStepIntent":
         return hanlde_which_step_intent();
+=======
+
+    elif intent_name == "RepeatIntent":
+        return repeat_current_cooking_step(intent,session)
+
+    elif intent_name == "NextStepIntent":
+        return goto_next_cooking_step(intent,session)
+
+>>>>>>> 8ae0e61e99dfecb59486ba3c1e2916bfd9fa808e
     else:
         raise ValueError("Invalid intent")
 
