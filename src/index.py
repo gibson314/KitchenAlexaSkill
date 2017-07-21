@@ -133,16 +133,17 @@ def get_dishes_from_session(intent, session):
     reprompt_text = None
     calories_amount = intent['slots']['Amount']['value']
     dishes = []
+
     for key in dishes_calories:
-        if dishes_calories[key] <= amount:
-            dishes_count += 1
-            dishes.add(key)
+        if dishes_calories[key] <= calories_amount:
+            dishes.append(key)
     if len(dishes) > 0:
         dishes_text = ""
         for dish in dishes:
             dishes_text += dish
             dishes_text += ","
-        speech_output = "There are" + str(len(dishes)) + "dishes valid: " + dishes_text + "please select the dishes you want."
+        speech_output = "There are " + str(len(dishes)) + " dishes valid: " + dishes_text + "please select the dishes you want."
+        should_end_session = True
     else:
        speech_output = "There is no valid dish satisfies your requirement."
        should_end_session = False
