@@ -60,15 +60,14 @@ def build_response(session_attributes, speechlet_response):
 # --------------- Functions that control the skill's behavior ------------------
 def handle_prepare_intent():
     pass
-def handle_repeat_indent(intent,session):
-    pass
+
 def handle_next_step_intent():
     pass
-def handle_go_to_step_intent():
-    pass
+
 def hanlde_which_step_intent():
     pass
-
+def handle_cook_intent():
+    pass
     
 def get_welcome_response():
     """ If we wanted to initialize the session to have some attributes we could
@@ -106,7 +105,6 @@ def set_color_in_session(intent, session):
     """ Sets the color in the session and prepares the speech to reply to the
     user.
     """
-
     card_title = intent['name']
     session_attributes = {}
     should_end_session = False
@@ -172,11 +170,7 @@ def set_recipe_in_session(intent, session):
 
 
 
-
-
-
-
-def repeat_current_cooking_step(intent, session):
+def handle_repeat_indent(intent, session):
     speech_output = "there must be something wroing"
     reprompt_text = "you need to be right, man "
     should_end_session = False
@@ -250,7 +244,6 @@ def on_intent(intent_request, session):
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request()
-<<<<<<< HEAD
     elif intent_name == "PrepareIntent":
         return handle_prepare_intent();
     elif intent_name == "CookIntent":
@@ -260,18 +253,10 @@ def on_intent(intent_request, session):
     elif intent_name == "NextStepIntent":
         return handle_next_step_intent();
     elif intent_name == "GoToStepIntent":
-        return handle_go_to_step_intent();
+        return handle_go_to_step_intent(intent,session);
     elif intent_name == "WhichStepIntent":
         return hanlde_which_step_intent();
-=======
 
-    elif intent_name == "RepeatIntent":
-        return repeat_current_cooking_step(intent,session)
-
-    elif intent_name == "NextStepIntent":
-        return goto_next_cooking_step(intent,session)
-
->>>>>>> 8ae0e61e99dfecb59486ba3c1e2916bfd9fa808e
     else:
         raise ValueError("Invalid intent")
 
