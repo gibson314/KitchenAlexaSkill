@@ -179,8 +179,12 @@ def goto_next_cooking_step(intent, session):
     reprompt_text = "you need to be right, man "
     should_end_session = False
     global current_step
+    print("current step is %d", current_step)
+
     if current_recipe in recipes:
         steps = recipes[current_recipe]
+        print("the length of step is %d",len(steps))
+        print("current step is %d", current_step)
         current_step = current_step + 1
         if (current_step< len(steps)):
             speech_output = steps[current_step]
@@ -216,6 +220,9 @@ def on_intent(intent_request, session):
 
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
+
+    print("current step on_intent is: ", current_step)
+
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
@@ -269,8 +276,8 @@ def lambda_handler(event, context):
     #     raise ValueError("Invalid Application ID")
 
     print("##################################################################")
-
-
+    current_step = -1
+    print("the current step after init: ",current_step)
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
                            event['session'])
