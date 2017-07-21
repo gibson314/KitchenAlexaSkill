@@ -74,13 +74,14 @@ def get_welcome_response():
     """
     session_attributes = {}
     card_title = "Welcome"
-    speech_output = "Welcome to the Alexa Skills Kit sample. " \
-                    "Please tell me your favorite color by saying, " \
-                    "my favorite color is red"
+    speech_output = "Welcome to the Alexa Kitchen. " \
+                    "Please tell me what you would like to cook, " \
+                    "let's prepare pizza"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
-    reprompt_text = "Please tell me your favorite color by saying, " \
-                    "my favorite color is red."
+    reprompt_text = "Please tell me what you would like to cook, " \
+                    "let's prepare pizza"
+
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -147,28 +148,6 @@ def get_color_from_session(intent, session):
     return build_response(session_attributes, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
-"""
-def set_recipe_in_session(intent, session):
-    session_attributes = {}
-    should_end_session = False
-    global current_recipe
-    tmp_recipe = intent['slots']['RecipeName']['value']
-    if tmp_recipe and tmp_recipe in recipes:
-        current_recipe = tmp_recipe
-        speech_output = ""
-
-        #speech_output = "your current recipe is" + current_recipe
-        #reprompt_text = "You can ask me your favorite color by saying, " \
-        #                "what's my favorite color?"
-    else:
-        speech_output = "I'm not sure what your recipe is. " \
-                        "Please try again."
-        reprompt_text = "I'm not sure what your favorite color is. " \
-                        "You can tell me your favorite color by saying, " \
-                        "my favorite color is red."
-    return build_response(session_attributes, build_speechlet_response(intent['name'], speech_output, reprompt_text, should_end_session))
-"""
-
 
 
 def handle_repeat_indent(intent, session):
@@ -184,7 +163,22 @@ def handle_repeat_indent(intent, session):
 
 
 def handle_go_to_step_intent(intent, session):
-    pass
+    global current_step
+    current_step = intent['slots']['stepNumber']['value']
+    speech_output = "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    reprompt_text = "you need to be right, man "
+
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        print("current step: ", current_step, type(current_step) )
+        print("total step: ", len(steps), type(current_step))
+        print("aaaaaa")
+        if (current_step < len(steps)):
+            print("you are right")
+            speech_output = "Now you came to step" + str(current_step) + steps[current_step]
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, False))
+
 
 def handle_prepare_intent(intent, session):
     global current_recipe
@@ -209,7 +203,7 @@ def handle_prepare_intent(intent, session):
         intent['name'], speech_output, reprompt_text, should_end_session))
 
 def handle_next_step_intent(intent, session):
-    speech_output = "there must be something wroing"
+    speech_output = "there must be something wrong"
     reprompt_text = "you need to be right, man "
     should_end_session = False
     global current_step
@@ -280,8 +274,6 @@ def on_intent(intent_request, session):
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
-    print("current step on_intent is: ", current_step)
-
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
@@ -342,7 +334,6 @@ def lambda_handler(event, context):
 
     print("##################################################################")
     current_step = -1
-    print("the current step after init: ",current_step)
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
                            event['session'])
