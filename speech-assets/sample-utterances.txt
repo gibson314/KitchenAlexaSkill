@@ -1,3 +1,16 @@
+PrepareIntent let's prepare for {RecipeName}
+PrepareIntent tell me about the ingredients of {RecipeName}
+CookIntent let's cook {RecipeName}
+CookIntent teach me how to cook {RecipeName}
+CookIntent i want to cook {RecipeName}
+RepeatIntent repeat  
+NextStepIntent next step
+NextStepIntent gotcha
+NextStepIntent i'm done
+NextStepIntent All right
+GoToStepIntent go to step {stepNumber}
+WhichStepIntent which step I am at
+WhichStepIntent which step
 GetNewFactIntent give me a fact
 GetNewFactIntent tell me about car
 GetNewFactIntent we want to know more
