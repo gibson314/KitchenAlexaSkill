@@ -1,0 +1,22 @@
+GetNewFactIntent give me a fact
+GetNewFactIntent tell me about car
+GetNewFactIntent we want to know more
+MyColorIsIntent my favorite color is {Color}
+MyColorIsIntent my favorite animal is {Animal}
+WhatsMyColorIntent what's my favorite color
+WhatsMyColorIntent what is my favorite color
+WhatsMyColorIntent what's my color
+WhatsMyColorIntent what is my color
+WhatsMyColorIntent my color
+WhatsMyColorIntent my favorite color
+WhatsMyColorIntent get my color
+WhatsMyColorIntent get my favorite color
+WhatsMyColorIntent give me my favorite color
+WhatsMyColorIntent give me my color
+WhatsMyColorIntent what my color is
+WhatsMyColorIntent what my favorite color is
+WhatsMyColorIntent yes
+WhatsMyColorIntent yup
+WhatsMyColorIntent sure
+WhatsMyColorIntent yes please
+WhichDishesValidIntent give me dishes lower than {Amount} calories

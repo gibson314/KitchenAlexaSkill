@@ -1,0 +1,41 @@
+{
+  "intents": [
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "GetNewFactIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "Color",
+          "type": "LIST_OF_COLORS"
+        },
+        {
+          "name": "Animal",
+          "type": "LIST_OF_ANIMAL"
+        }
+      ],
+      "intent": "MyColorIsIntent"
+    },
+    {
+      "intent": "WhatsMyColorIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "Amount",
+          "type": "AMAZON.NUMBER"
+        }
+      ],
+      "intent": "WhichDishesValidIntent"
+    }
+  ]
+}
