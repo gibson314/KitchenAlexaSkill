@@ -8,23 +8,25 @@ http://amzn.to/1LGWsLG
 """
 
 from __future__ import print_function
-import random
+
+
 # =============== Data =================
 #dishes_calories = {"Orange Chicken": 5000, "Broccoli Beef": 4000, "shit": 1000}
-dishes_calories = {"Pineapple Chicken": 5000, "Potato Beef": 4000, "Onion Lamp": 3000, "Broccoli Pork": 2000}
-food_calories = {"Broccoli": 100, "Pineapple": 200, "Onion": 300, "Potato": 500, "Tomato": 300, "Egg": 300, "Lamp": 2000, "Beef": 3000, "Chicken": 3000, "Pork": 1000}
-category_food = {"vegetable": ["Broccoli", "Pineapple", "Onion", "Potato", "Tomato"], "meat": ["Egg", "Lamp", "Beef", "Chicken", "Pork"]}
-# food_category = {"Brocoli": "vegetable", "Pineapple": "vegetable", "Onion": "vegetable", "Potato": "vegetable", "Tomato": "vegetable", "Egg": "meat", "Lamp": "meat", "Beef": "meat", "Chicken": "meat", "Pork": "meat"}
-food_storage = {"Broccoli": 3, "Pineapple": 2, "Onion": 1, "Potato": 4, "Tomato": 1, "Egg": 2, "Lamp": 3, "Beef": 4, "Chicken": 1, "Pork": 2}
+dishes_calories = {"Pineapple Chicken": 5000, "Potato Beef": 4000, "Onion Lamb": 3000, "Broccoli Pork": 2000}
+food_calories = {"Broccoli": 100, "Pineapple": 200, "Onion": 300, "Potato": 500, "Tomato": 300, "Egg": 300, "Lamb": 2000, "Beef": 3000, "Chicken": 3000, "Pork": 1000}
+category_food = {"vegetable": ["Broccoli", "Pineapple", "Onion", "Potato", "Tomato"], "meat": ["Egg", "Lamb", "Beef", "Chicken", "Pork"]}
+# food_category = {"Brocoli": "vegetable", "Pineapple": "vegetable", "Onion": "vegetable", "Potato": "vegetable", "Tomato": "vegetable", "Egg": "meat", "Lamb": "meat", "Beef": "meat", "Chicken": "meat", "Pork": "meat"}
+food_storage = {"Broccoli": 3, "Pineapple": 2, "Onion": 1, "Potato": 4, "Tomato": 1, "Egg": 2, "Lamb": 3, "Beef": 4, "Chicken": 1, "Pork": 2}
 
-dishes_food = {"Pineapple Chicken":["Pineapple", "Chicken"] , "Potato Beef": ["Potato", "Beef"], "Onion Lamp": ["Onion", "Lamp"], "Brocoli Pork": ["Brocoli", "Pork"]}
-food_unit = {"Broccoli": "lb", "Pineapple": "lb", "Onion": "count", "Potato": "count", "Tomato": "count", "Egg": "count", "Lamp": "lb", "Beef": "lb", "Chicken": "lb", "Pork": "lb"}
+dishes_food = {"Pineapple Chicken":["Pineapple", "Chicken"] , "Potato Beef": ["Potato", "Beef"], "Onion Lamb": ["Onion", "Lamb"], "Brocoli Pork": ["Brocoli", "Pork"]}
+food_unit = {"Broccoli": "lb", "Pineapple": "lb", "Onion": "count", "Potato": "count", "Tomato": "count", "Egg": "count", "Lamb": "lb", "Beef": "lb", "Chicken": "lb", "Pork": "lb"}
 
 
 
 # =============== State ================
-EXIST_VALID_DISHES = True
+exist_valid_dishes = True
 
+global_state = 0
 
 # --------------- Helpers that build all of the responses ----------------------
 
@@ -73,12 +75,12 @@ def get_recommended_dish(calories_amount):
         if pair[1] * min(1, food_storage[pair[0]]) <= remain_calories_amount:
             food_list.append((pair[0], 1))
             remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
-            if remain_calories_amount <= calories_amount / 2
+            if remain_calories_amount <= calories_amount / 2:
                 break
 
     for pair in vege_calories:
         remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
-        if remain_calories_amount >= 0
+        if remain_calories_amount >= 0:
             food_list.append((pair[0], min(1, food_storage[pair[0]])))
             remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
 
@@ -109,7 +111,7 @@ def get_welcome_response():
 
 def handle_session_end_request():
     card_title = "Session Ended"
-    speech_output = "Thank you for trying the Alexa Skills Kit sample. " \
+    speech_output = "Thank you for using the Kitchen Alexa Skills Kit. " \
                     "Have a nice day! "
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
@@ -173,6 +175,9 @@ def get_color_from_session(intent, session):
 
 # Get Dishes lower than particular amount of calories.
 def get_dishes_from_session(intent, session):
+    global global_state
+
+
     session_attributes = {}
     reprompt_text = None
     calories_amount = int(intent['slots']['Amount']['value'])
@@ -180,6 +185,7 @@ def get_dishes_from_session(intent, session):
     dishes = []
     # Add calories amount to session.
     session_attributes = create_required_calories_attributes(calories_amount)
+    
     for key in dishes_calories:
         if dishes_calories[key] <= int(calories_amount):
             print(key)
@@ -194,10 +200,13 @@ def get_dishes_from_session(intent, session):
             dishes_text += ","
         speech_output = "There are " + str(len(dishes)) + " dishes valid: " + dishes_text + "please select the dishes you want."
         should_end_session = True
+        global_state = 1
     else:
         EXIST_VALID_DISHES = False
-        speech_output = "There is no valid dish satisfies your requirement."
+        speech_output = "There is no valid dish satisfies your requirement.  Do you want some recommendations about ingredients?"
         should_end_session = False
+        global_state = 2
+
 
     return build_response(session_attributes, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
@@ -226,9 +235,22 @@ def get_recommended_dish_from_session(intent, session):
             dish_text += ", " 
 
         speech_output = "We have " + dish_text + ". Do you want to make a meal with those foods?"
-        should_end_session = True
+        should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
+
+
+# Handle Yes response.
+def handle_Yes_Response(intent, session):
+    global global_state
+    if global_state == 2:
+        return get_recommended_dish_from_session(intent, session)
+
+# Handle No response.
+def handle_No_Response(intent, session):
+    global global_state
+    if global_state != 0:
+        return handle_session_end_request()
 
 # --------------- Events ------------------
 
@@ -269,6 +291,10 @@ def on_intent(intent_request, session):
         return get_dishes_from_session(intent, session)
     elif intent_name == "RecommendDishIntent":
         return get_recommended_dish_from_session(intent, session)
+    elif intent_name == "YesResponseIntent":
+        return handle_Yes_Response(intent, session)
+    elif intent_name == "NoResponseIntent":
+        return handle_No_Response(intent, session)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
