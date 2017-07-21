@@ -19,7 +19,7 @@ ingredients = {
 }
 
 recipes = {
-    "basic pasta": [
+    "pasta": [
         "step one: Bring a large pot of lightly salted water to a boil. ",
         "step two: Mix in pasta and cook for 8 to 10 minutes or until al dente; drain. ",
         "step three: Mix together spaghetti and spaghetti sauce. ",
