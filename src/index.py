@@ -65,24 +65,22 @@ def get_recommended_dish(calories_amount):
     meat_calories = [(food, food_calories[food]) for food in category_food["meat"]]
     meat_calories = sorted(meat_calories, key=lambda pair: pair[0], reverse=True)
 
-
-    for pair in meat_calories:
-        if pair[1] <= calories_amount:
-            food_list.append((pair[0], 1))
-            remain_calories_amount -= pair[1]
-            break
-
-
     # Get vegetables
     vege_calories = [(food, food_calories[food]) for food in category_food["vegetable"]]
     vege_calories = sorted(vege_calories, key=lambda pair: pair[0])
 
-    for idx in range(3):
-        if calories_amount <= 0:
-            break
-        else:
-            remain_calories_amount -= vege_calories[idx][1] * 1
-            food_list.append((vege_calories[idx][0], 1))
+    for pair in meat_calories:
+        if pair[1] * min(1, food_storage[pair[0]]) <= remain_calories_amount:
+            food_list.append((pair[0], 1))
+            remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
+            if remain_calories_amount <= calories_amount / 2
+                break
+
+    for pair in vege_calories:
+        remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
+        if remain_calories_amount >= 0
+            food_list.append((pair[0], min(1, food_storage[pair[0]])))
+            remain_calories_amount -= pair[1] * min(1, food_storage[pair[0]])
 
 
     # Get return
