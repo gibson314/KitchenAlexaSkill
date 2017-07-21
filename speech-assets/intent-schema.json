@@ -73,6 +73,10 @@
         }
       ],
       "intent": "WhichDishesValidIntent"
+    },
+
+    {
+      "intent": "RecommendDishIntent"
     }
   ]
 }
