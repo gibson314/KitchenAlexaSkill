@@ -11,7 +11,7 @@ from __future__ import print_function
 
 current_step = -1
 prepare_cook_status = 0
-current_recipe = ""
+current_recipe = "basic pasta"
 
 ingredients = {
     "basic pasta": "1 egg, beaten, 1/2 teaspoon salt, 1 cup all-purpose flour, 2 tablespoons water",
@@ -19,7 +19,13 @@ ingredients = {
 }
 
 recipes = {
-    "basic pasta": ["step one: In a medium sized bowl, combine flour and salt. Make a well in the flour, add the slightly beaten egg, and mix. Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.", "On a lightly floured surface, knead dough for about 3 to 4 minutes. With a pasta machine or by hand roll dough out to desired thinness. Use machine or knife to cut into strips of desired width."  ],
+    "basic pasta": [
+        "step one: In a medium sized bowl, combine flour and salt. ",
+        "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
+        "step three: Mixture should form a stiff dough. If needed, stir in 1 to 2 tablespoons water.",
+        "step four: On a lightly floured surface, knead dough for about 3 to 4 minutes. ",
+        "step five: With a pasta machine or by hand roll dough out to desired thinness. ",
+        "step six: Use machine or knife to cut into strips of desired width."],
     "pizza": [
         "step one: In a medium sized bowl, combine flour and salt. ",
         "step two: Make a well in the flour, add the slightly beaten egg, and mix. ",
@@ -68,13 +74,14 @@ def get_welcome_response():
     """
     session_attributes = {}
     card_title = "Welcome"
-    speech_output = "Welcome to the Alexa Skills Kit sample. " \
-                    "Please tell me your favorite color by saying, " \
-                    "my favorite color is red"
+    speech_output = "Welcome to the Alexa Kitchen. " \
+                    "Please tell me what you would like to cook, " \
+                    "let's prepare pizza"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
-    reprompt_text = "Please tell me your favorite color by saying, " \
-                    "my favorite color is red."
+    reprompt_text = "Please tell me what you would like to cook, " \
+                    "let's prepare pizza"
+
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -141,28 +148,6 @@ def get_color_from_session(intent, session):
     return build_response(session_attributes, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
-"""
-def set_recipe_in_session(intent, session):
-    session_attributes = {}
-    should_end_session = False
-    global current_recipe
-    tmp_recipe = intent['slots']['RecipeName']['value']
-    if tmp_recipe and tmp_recipe in recipes:
-        current_recipe = tmp_recipe
-        speech_output = ""
-
-        #speech_output = "your current recipe is" + current_recipe
-        #reprompt_text = "You can ask me your favorite color by saying, " \
-        #                "what's my favorite color?"
-    else:
-        speech_output = "I'm not sure what your recipe is. " \
-                        "Please try again."
-        reprompt_text = "I'm not sure what your favorite color is. " \
-                        "You can tell me your favorite color by saying, " \
-                        "my favorite color is red."
-    return build_response(session_attributes, build_speechlet_response(intent['name'], speech_output, reprompt_text, should_end_session))
-"""
-
 
 
 def handle_repeat_indent(intent, session):
@@ -178,21 +163,22 @@ def handle_repeat_indent(intent, session):
 
 
 def handle_go_to_step_intent(intent, session):
-    speech_output = "there must be something wroing"
-    reprompt_text = "you need to be right, man "
-    should_end_session = False
     global current_step
-    print("current step is %d", current_step)
+    current_step = intent['slots']['stepNumber']['value']
+    speech_output = "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    reprompt_text = "you need to be right, man "
 
     if current_recipe in recipes:
         steps = recipes[current_recipe]
-        print("the length of step is %d",len(steps))
-        print("current step is %d", current_step)
-        current_step = current_step + 1
-        if (current_step< len(steps)):
-            speech_output = steps[current_step]
+        print("current step: ", current_step, type(current_step) )
+        print("total step: ", len(steps), type(current_step))
+        print("aaaaaa")
+        if (current_step < len(steps)):
+            print("you are right")
+            speech_output = "Now you came to step" + str(current_step) + steps[current_step]
     return build_response({}, build_speechlet_response(
-        intent['name'], speech_output, reprompt_text, should_end_session))
+        intent['name'], speech_output, reprompt_text, False))
+
 
 def handle_prepare_intent(intent, session):
     global current_recipe
@@ -204,6 +190,8 @@ def handle_prepare_intent(intent, session):
         speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . Are you ready?"
         reprompt_text = "Take you time. You can tell me when you are well prepared for " + current_recipe
         should_end_session = False
+        global current_step
+        current_step = -1
 
     else:
         #TODO
@@ -214,12 +202,40 @@ def handle_prepare_intent(intent, session):
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
-def handle_next_step_intent():
+def handle_next_step_intent(intent, session):
+    speech_output = "there must be something wrong"
+    reprompt_text = "you need to be right, man "
+    should_end_session = False
+    global current_step
+    print("current step is %d", current_step)
 
-    pass
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        print("the length of step is ",len(steps))
+        print("current step is ", current_step)
+        current_step = current_step + 1
+        if (current_step< len(steps)):
+            speech_output = steps[current_step]
+        #TODO last step
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
 
-def hanlde_which_step_intent():
-    pass
+def hanlde_which_step_intent(intent, session):
+    should_end_session = False
+    global current_step
+    print("current step is %d", current_step)
+    steps = recipes[current_recipe]
+    if current_step == -1:
+        speech_output = "We have not start yet. You can say next then we can start cooking " + current_recipe
+        reprompt_text = speech_output
+    elif (current_step < len(steps)):
+        speech_output = "We are at step " + str(current_step + 1) + steps[current_step]
+        reprompt_text = speech_output
+
+    #TODO else
+    reprompt_text = "you little silly"
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
 
 def handle_cook_intent(intent, session):
     global current_recipe
@@ -232,7 +248,7 @@ def handle_cook_intent(intent, session):
         reprompt_text = "Come on, let's cook " + current_recipe
         should_end_session = False
         global current_step
-        current_step = 0
+        current_step = -1
         print("current step is", current_step)
     else:
         #TODO
@@ -273,8 +289,6 @@ def on_intent(intent_request, session):
     print("on_intent requestId=" + intent_request['requestId'] +
           ", sessionId=" + session['sessionId'])
 
-    print("current step on_intent is: ", current_step)
-
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
@@ -287,7 +301,7 @@ def on_intent(intent_request, session):
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
-        return handle_session_end_request()
+        return handle_session_end_request(intent, session)
     elif intent_name == "PrepareIntent":
         return handle_prepare_intent(intent, session);
     elif intent_name == "CookIntent":
@@ -295,11 +309,11 @@ def on_intent(intent_request, session):
     elif intent_name == "RepeatIntent":
         return handle_repeat_indent(intent,session)
     elif intent_name == "NextStepIntent":
-        return handle_next_step_intent();
+        return handle_next_step_intent(intent, session);
     elif intent_name == "GoToStepIntent":
         return handle_go_to_step_intent(intent,session);
     elif intent_name == "WhichStepIntent":
-        return hanlde_which_step_intent();
+        return hanlde_which_step_intent(intent, session);
 
     else:
         raise ValueError("Invalid intent")
@@ -335,7 +349,6 @@ def lambda_handler(event, context):
 
     print("##################################################################")
     current_step = -1
-    print("the current step after init: ",current_step)
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
                            event['session'])
