@@ -4,6 +4,12 @@ This is a Alexa application to teach you cook step by step and balance you calor
 
 For recipe's part:
 
+* Get ingredents list by saying "let's prepare for pasta".
+* Instructions of cooking step by step by saying "let's cook for pasta".
+* "Go to step 2" if you miss something.
+* Say "next" to get next direction.
+
+
 For calories' part:
 
 There are several use cases for Alexa skill:
