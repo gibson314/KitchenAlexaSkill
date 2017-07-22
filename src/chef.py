@@ -160,18 +160,23 @@ def handle_repeat_indent(intent, session):
 
 def handle_go_to_step_intent(intent, session):
     global current_step
-    current_step = intent['slots']['stepNumber']['value']
-    speech_output = "!!!!!!!!!!!!!!!!!!!!!!!!!"
-    reprompt_text = "you need to be right, man "
+    step = int(intent['slots']['stepNumber']['value'])
+    #speech_output = "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #reprompt_text = "you need to be right, man "
 
     if current_recipe in recipes:
         steps = recipes[current_recipe]
-        print("current step: ", current_step, type(current_step) )
-        print("total step: ", len(steps), type(current_step))
-        print("aaaaaa")
-        if (current_step < len(steps)):
-            print("you are right")
-            speech_output = "Now you came to step" + str(current_step) + steps[current_step]
+        #print("current step: ", current_step, type(current_step) )
+        #print("total step: ", len(steps), type(current_step))
+        #print("aaaaaa")
+        if step < len(steps):
+            speech_output = "Now you came to step " + str(step) + steps[step]
+            reprompt_text = "Now we are at step " + str(step) + steps[step]
+            current_step = step
+        else:
+            speech_output = "This recipe only has " + str(len(steps)) + "steps."
+            reprompt_text = "Now we are at step " + str(current_step) + steps[current_step]
+
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, False))
 
