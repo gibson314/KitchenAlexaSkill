@@ -364,7 +364,7 @@ def hanlde_which_step_intent(intent, session):
         speech_output = "We have not start yet. You can say next then we can start cooking " + current_recipe
         reprompt_text = speech_output
     elif (current_step < len(steps)):
-        speech_output = "We are at step " + str(current_step + 1) + steps[current_step]
+        speech_output = "We are at" + steps[current_step]
         reprompt_text = speech_output
     else:
         speech_output = "We're all done. Enjoy!"
