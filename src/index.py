@@ -349,7 +349,9 @@ def handle_next_step_intent(intent, session):
         current_step = current_step + 1
         if (current_step< len(steps)):
             speech_output = steps[current_step]
-        #TODO last step
+        else:
+            speech_output = "We're all done. Enjoy!"
+            should_end_session = True
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
@@ -364,9 +366,9 @@ def hanlde_which_step_intent(intent, session):
     elif (current_step < len(steps)):
         speech_output = "We are at step " + str(current_step + 1) + steps[current_step]
         reprompt_text = speech_output
-
-    #TODO else
-    reprompt_text = "you little silly"
+    else:
+        speech_output = "We're all done. Enjoy!"
+        should_end_session = True
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
 
@@ -391,7 +393,6 @@ def handle_cook_intent(intent, session):
 
     return build_response({}, build_speechlet_response(
         intent['name'], speech_output, reprompt_text, should_end_session))
-
 
 
 # --------------- Events ------------------
