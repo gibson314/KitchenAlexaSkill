@@ -7,7 +7,6 @@ RepeatIntent repeat
 RepeatIntent excuse me
 RepeatIntent can you say it again
 NextStepIntent sure
-NextStepIntent yes
 NextStepIntent next step
 NextStepIntent next
 NextStepIntent yup
