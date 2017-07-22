@@ -28,6 +28,30 @@ exist_valid_dishes = True
 
 global_state = 0
 
+current_step = -1
+prepare_cook_status = 0
+current_recipe = "pasta"
+
+ingredients = {
+    "pasta": "1 pound spaghetti, 1 tablespoons of spaghetti sauce, 1 cup shredded mild Cheddar cheese",
+    "lemon apple juice": "1/2 cup cool water 1 cucumber, halved 2 green apples, quartered 1 lemon, halved"
+}
+
+recipes = {
+    "pasta": [
+        "step one: Bring a large pot of lightly salted water to a boil. ",
+        "step two: Mix in pasta and cook for 8 to 10 minutes or until al dente; drain. ",
+        "step three: Mix together spaghetti and spaghetti sauce. ",
+        "step four: Top with cheese. "],
+    "lemon apple juice": [
+        "step one: Pour water into a glass and place beneath the spigot of a juicer.",
+        "step two: Process first the cucumber, waiting about 20 seconds between halves. ",
+        "step three: Finally juice the lemon halves.",
+        "step four: Stir juice vigorously to blend "]
+}
+
+
+
 # --------------- Helpers that build all of the responses ----------------------
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):
@@ -252,6 +276,125 @@ def handle_No_Response(intent, session):
     if global_state != 0:
         return handle_session_end_request()
 
+# ================ Handler for chef ===================
+
+def handle_repeat_indent(intent, session):
+    speech_output = "there must be something wroing"
+    reprompt_text = "you need to be right, man "
+    should_end_session = False
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        if (current_step< len(steps)):
+            speech_output = steps[current_step]
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
+
+
+def handle_go_to_step_intent(intent, session):
+    global current_step
+    step = int(intent['slots']['stepNumber']['value'])
+    #speech_output = "!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #reprompt_text = "you need to be right, man "
+
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        #print("current step: ", current_step, type(current_step) )
+        #print("total step: ", len(steps), type(current_step))
+        #print("aaaaaa")
+        if step < len(steps):
+            speech_output = "Now you came to step " + str(step) + steps[step]
+            reprompt_text = "Now we are at step " + str(step) + steps[step]
+            current_step = step
+        else:
+            speech_output = "This recipe only has " + str(len(steps)) + "steps."
+            reprompt_text = "Now we are at step " + str(current_step) + steps[current_step]
+
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, False))
+
+
+def handle_prepare_intent(intent, session):
+    global current_recipe
+    global ingredients
+    current_recipe = intent['slots']['RecipeName']['value']
+    print("current recipe is", current_recipe)
+
+    if current_recipe in recipes:
+        speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . Are you ready?"
+        reprompt_text = "Take you time. You can tell me when you are well prepared for " + current_recipe
+        should_end_session = False
+        global current_step
+        current_step = -1
+
+    else:
+        #TODO
+        speech_output = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish."
+        reprompt_text = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish. "
+        should_end_session = False
+
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
+
+def handle_next_step_intent(intent, session):
+    speech_output = "there must be something wrong"
+    reprompt_text = "you need to be right, man "
+    should_end_session = False
+    global current_step
+    print("current step is %d", current_step)
+
+    if current_recipe in recipes:
+        steps = recipes[current_recipe]
+        print("the length of step is ",len(steps))
+        print("current step is ", current_step)
+        current_step = current_step + 1
+        if (current_step< len(steps)):
+            speech_output = steps[current_step]
+        else:
+            speech_output = "We're all done. Enjoy!"
+            should_end_session = True
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
+
+def hanlde_which_step_intent(intent, session):
+    should_end_session = False
+    global current_step
+    print("current step is %d", current_step)
+    steps = recipes[current_recipe]
+    if current_step == -1:
+        speech_output = "We have not start yet. You can say next then we can start cooking " + current_recipe
+        reprompt_text = speech_output
+    elif (current_step < len(steps)):
+        speech_output = "We are at step " + str(current_step + 1) + steps[current_step]
+        reprompt_text = speech_output
+    else:
+        speech_output = "We're all done. Enjoy!"
+        should_end_session = True
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
+
+def handle_cook_intent(intent, session):
+    global current_recipe
+    global recipes
+    current_recipe = intent['slots']['RecipeName']['value']
+    print("current recipe is", current_recipe)
+
+    if current_recipe in recipes:
+        speech_output = "To cook " + current_recipe + " , we need " + str(len(recipes[current_recipe])) + " steps. Would you like to follow me?"
+        reprompt_text = "Come on, let's cook " + current_recipe
+        should_end_session = False
+        global current_step
+        current_step = -1
+        print("current step is", current_step)
+    else:
+        #TODO
+        speech_output = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish."
+        reprompt_text = "I can not find " + current_recipe + " in the cookbook. Please tell me another dish. "
+        should_end_session = False
+
+    return build_response({}, build_speechlet_response(
+        intent['name'], speech_output, reprompt_text, should_end_session))
+
+
 # --------------- Events ------------------
 
 def on_session_started(session_started_request, session):
@@ -295,6 +438,21 @@ def on_intent(intent_request, session):
         return handle_Yes_Response(intent, session)
     elif intent_name == "NoResponseIntent":
         return handle_No_Response(intent, session)
+
+    elif intent_name == "PrepareIntent":
+        return handle_prepare_intent(intent, session);
+    elif intent_name == "CookIntent":
+        return handle_cook_intent(intent, session);
+    elif intent_name == "RepeatIntent":
+        return handle_repeat_indent(intent,session)
+    elif intent_name == "NextStepIntent":
+        return handle_next_step_intent(intent, session);
+    elif intent_name == "GoToStepIntent":
+        return handle_go_to_step_intent(intent,session);
+    elif intent_name == "WhichStepIntent":
+        return hanlde_which_step_intent(intent, session);
+
+
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
