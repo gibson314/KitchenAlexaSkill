@@ -167,7 +167,7 @@ def handle_go_to_step_intent(intent, session):
     if current_recipe in recipes:
         steps = recipes[current_recipe]
         print("current step: ", current_step, type(current_step) )
-        print("total step: ", len(steps), type(current_step))
+        print("total step: ", len(steps), type(len(steps)))
         print("aaaaaa")
         if (current_step < len(steps)):
             print("you are right")
