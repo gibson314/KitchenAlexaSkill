@@ -22,4 +22,7 @@ WhichStepIntent which step I am at
 WhichStepIntent which step
 WhichStepIntent where am I
 WhichStepIntent where were we
-WhichDishesValidIntent give me dishes lower than {Amount} calories
+NoResponseIntent No thanks
+YesResponseIntent Yes please
+WhichDishesValidIntent  give me dishes lower than{Amount} calories
+RecommendDishIntent give me some recommendations about dishes please

@@ -183,7 +183,7 @@ def handle_prepare_intent(intent, session):
     print("current recipe is", current_recipe)
 
     if current_recipe in recipes:
-        speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . Are you ready?"
+        speech_output = "To prepare " + current_recipe + " , we need " + ingredients[current_recipe] + " . If you are ready, say next."
         reprompt_text = "Take you time. You can tell me when you are well prepared for " + current_recipe
         should_end_session = False
         global current_step
@@ -242,7 +242,7 @@ def handle_cook_intent(intent, session):
     print("current recipe is", current_recipe)
 
     if current_recipe in recipes:
-        speech_output = "To cook " + current_recipe + " , we need " + str(len(recipes[current_recipe])) + " steps. Would you like to follow me?"
+        speech_output = "To cook " + current_recipe + " , we need " + str(len(recipes[current_recipe])) + " steps. Say next to follow me step by step."
         reprompt_text = "Come on, let's cook " + current_recipe
         should_end_session = False
         global current_step
