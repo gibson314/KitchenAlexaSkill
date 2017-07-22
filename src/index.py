@@ -16,7 +16,7 @@ dishes_calories = {"Pineapple Chicken": 2549, "Potato Beef": 3786, "Onion Lamb":
 food_calories = {"Broccoli": 205, "Pineapple": 452, "Onion": 44, "Potato": 163, "Tomato": 22, "Egg": 72, "Lamb": 1216, "Beef": 1506, "Chicken": 1083, "Pork": 1096}
 category_food = {"vegetable": ["Broccoli", "Pineapple", "Onion", "Potato", "Tomato"], "meat": ["Egg", "Lamb", "Beef", "Chicken", "Pork"]}
 # food_category = {"Brocoli": "vegetable", "Pineapple": "vegetable", "Onion": "vegetable", "Potato": "vegetable", "Tomato": "vegetable", "Egg": "meat", "Lamb": "meat", "Beef": "meat", "Chicken": "meat", "Pork": "meat"}
-food_storage = {"Broccoli": 0.7, "Pineapple": 0.6, "Onion": 1, "Potato": 4, "Tomato": 1, "Egg": 2, "Lamb": 3, "Beef": 4, "Chicken": 0.7, "Pork": 2}
+food_storage = {"Broccoli": 0.7, "Pineapple": 0.6, "Onion": 1, "Potato": 4, "Tomato": 1, "Egg": 2, "Lamb": 3, "Beef": 4, "Chicken": 0.3, "Pork": 0.8}
 
 dishes_food = {"Pineapple Chicken":["Pineapple", "Chicken"] , "Potato Beef": ["Potato", "Beef"], "Onion Lamb": ["Onion", "Lamb"], "Brocoli Pork": ["Brocoli", "Pork"]}
 food_unit = {"Broccoli": "bunch", "Pineapple": "fruit", "Onion": "medium", "Potato": "medium", "Tomato": "medium", "Egg": "large", "Lamb": "lb", "Beef": "lb", "Chicken": "lb", "Pork": "lb"}
